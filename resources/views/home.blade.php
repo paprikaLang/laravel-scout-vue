@@ -24,6 +24,10 @@
             </div>
         </div>
     </div>
+    <div class="alert alert-danger" role="alert" v-if="error">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        @{{ error }}
+    </div>
     <div id="products" class="row list-group">
         {{--<li class="list-group-item" v-for="product in products">@{{ product.title }}</li>--}}
         <div class="item col-xs-4 col-lg-4" v-for="product in products">
@@ -67,8 +71,8 @@
                 this.loading = true;
                 // The `success` method has been deprecated. Use the `then` method instead.
                 this.$http.get('/search?q=' + this.query).then(function(response) {
-                    console.log(response.data);
-                    this.products = response.data;
+                    console.log(response.data.error);
+                    response.data.error ? this.error=response.data.error : this.products = response.data;
                     this.loading = false;
                     this.query = '';
                 }.bind(this));
